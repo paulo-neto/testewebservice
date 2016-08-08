@@ -1,5 +1,6 @@
 package br.com.pauloneto.testewebservice.ws.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -19,8 +20,18 @@ public class ProductWsImpl implements IProductWs {
 	@Override
 	@WebMethod
 	public List<Product> obterTodosProdutos() {
-		// TODO Auto-generated method stub
-		return null;
+		return gerarListaProdutos();
+	}
+
+	private List<Product> gerarListaProdutos() {
+		List<Product> produtos = new ArrayList<Product>();
+		Product p1 = new Product("Arroz");
+		Product p2 = new Product("Feijão");
+		Product p3 = new Product("Macarrão");
+		produtos.add(p1);
+		produtos.add(p2);
+		produtos.add(p3);
+		return produtos;
 	}
 
 }
