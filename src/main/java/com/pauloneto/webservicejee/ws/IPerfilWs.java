@@ -1,4 +1,4 @@
-package br.com.pauloneto.testewebservice.ws;
+package com.pauloneto.webservicejee.ws;
 
 import java.util.List;
 
@@ -7,12 +7,12 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
-import br.com.pauloneto.testewebservice.models.Product;
+import com.pauloneto.webservicejee.dto.PerfilDTO;
 
 @WebService
 @SOAPBinding(style = Style.RPC)
-public interface IProductWs {
+public interface IPerfilWs {
 
 	@WebMethod
-	public List<Product> obterTodosProdutos();
+	public List<PerfilDTO> obterTodosProdutos();
 }
