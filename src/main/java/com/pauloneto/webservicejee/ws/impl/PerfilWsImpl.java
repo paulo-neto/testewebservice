@@ -13,7 +13,7 @@ import com.pauloneto.webservicejee.ws.IPerfilWs;
 import com.pauloneto.webservicejee.ws.WebServiceGeneric;
 
 @WebService(endpointInterface = "com.pauloneto.webservicejee.ws.IPerfilWs")
-public class ProductWsImpl extends WebServiceGeneric<PerfilDTO, Perfil>implements IPerfilWs {
+public class PerfilWsImpl extends WebServiceGeneric<PerfilDTO, Perfil>implements IPerfilWs {
 
 	@Resource
     private WebServiceContext wsctx;
