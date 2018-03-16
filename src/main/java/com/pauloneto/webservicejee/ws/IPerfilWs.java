@@ -14,5 +14,5 @@ import com.pauloneto.webservicejee.dto.PerfilDTO;
 public interface IPerfilWs {
 
 	@WebMethod
-	public List<PerfilDTO> obterTodosProdutos();
+	public List<PerfilDTO> obterTodosPerfis();
 }

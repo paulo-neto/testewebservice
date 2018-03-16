@@ -24,7 +24,7 @@ public class PerfilWsImpl extends WebServiceGeneric<PerfilDTO, Perfil> implement
 	private PerfilBusines perfilBusines;
 	
 	@Override
-	public List<PerfilDTO> obterTodosProdutos() {
+	public List<PerfilDTO> obterTodosPerfis() {
 		return gerarListaProdutos();
 	}
 
