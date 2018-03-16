@@ -8,11 +8,11 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.pauloneto.webservicejee.converter.IApiConverter;
+import com.pauloneto.webservicejee.converter.IWebServiceConverter;
 import com.pauloneto.webservicejee.dto.UsuarioDTO;
 import com.pauloneto.webservicejee.models.Usuario;
 
-public class UsuarioConverter implements IApiConverter<Usuario, UsuarioDTO> {
+public class UsuarioConverter implements IWebServiceConverter<Usuario, UsuarioDTO> {
 
 	@Inject
 	private Logger logger;

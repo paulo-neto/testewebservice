@@ -8,11 +8,11 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.pauloneto.webservicejee.converter.IApiConverter;
+import com.pauloneto.webservicejee.converter.IWebServiceConverter;
 import com.pauloneto.webservicejee.dto.PerfilDTO;
 import com.pauloneto.webservicejee.models.Perfil;
 
-public class PerfilConverter implements IApiConverter<Perfil, PerfilDTO> {
+public class PerfilConverter implements IWebServiceConverter<Perfil, PerfilDTO> {
 	
 	@Inject
 	private Logger logger;

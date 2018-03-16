@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 
-import com.pauloneto.webservicejee.converter.IApiConverter;
+import com.pauloneto.webservicejee.converter.IWebServiceConverter;
 import com.pauloneto.webservicejee.repository.GenericRepositoryImpl;
 
 
@@ -19,7 +19,7 @@ public abstract class BusinessGeneric<ENTITY,DTO> {
 	protected GenericRepositoryImpl<ENTITY> repository;
 	
 	@Inject
-	protected IApiConverter<ENTITY, DTO> converter;
+	protected IWebServiceConverter<ENTITY, DTO> converter;
 
 	public abstract ENTITY atualizar(Long codigo, DTO dto) throws BusinesException;
 

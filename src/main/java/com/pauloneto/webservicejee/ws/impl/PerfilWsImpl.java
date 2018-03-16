@@ -4,19 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceContext;
 
+import com.pauloneto.webservicejee.busines.impl.PerfilBusines;
 import com.pauloneto.webservicejee.dto.PerfilDTO;
 import com.pauloneto.webservicejee.models.Perfil;
 import com.pauloneto.webservicejee.ws.IPerfilWs;
 import com.pauloneto.webservicejee.ws.WebServiceGeneric;
 
 @WebService(endpointInterface = "com.pauloneto.webservicejee.ws.IPerfilWs")
-public class PerfilWsImpl extends WebServiceGeneric<PerfilDTO, Perfil>implements IPerfilWs {
+public class PerfilWsImpl extends WebServiceGeneric<PerfilDTO, Perfil> implements IPerfilWs {
 
 	@Resource
     private WebServiceContext wsctx;
+	
+	@Inject
+	private PerfilBusines perfilBusines;
 	
 	@Override
 	public List<PerfilDTO> obterTodosProdutos() {
