@@ -1,2 +1,2 @@
-# testewebservice
-Projeto teste para aplicar conhecimentos em webservices Java (JAX-WS) e SOAP
+# webservicejee
+Implementação de um  webservice utilizando JavaEE 7 e Java (JAX-WS).
