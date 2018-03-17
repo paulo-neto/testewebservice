@@ -4,18 +4,22 @@
 package com.pauloneto.webservicejee.repository;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.Type;
 
 import com.pauloneto.webservicejee.mesages.KeyMesages;
 
@@ -25,6 +29,11 @@ import com.pauloneto.webservicejee.mesages.KeyMesages;
  * 
  * @author Paulo Antonio
  * @since quinta-feira 03 11 2016
+ */
+/**
+ * @author paulo-neto
+ *
+ * @param <T>
  */
 public abstract class GenericRepositoryImpl<T> implements IGenericRepository<T>, Serializable {
 
@@ -100,6 +109,11 @@ public abstract class GenericRepositoryImpl<T> implements IGenericRepository<T>,
 		}
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see com.pauloneto.webservicejee.repository.IGenericRepository#updateList(java.util.List)
+	 */
+	@Override
 	public List<T> updateList(List<T> lista)throws RepositoryException{
 		int contador = 1;
 		List<T> mergedList = new ArrayList<T>();
@@ -125,6 +139,10 @@ public abstract class GenericRepositoryImpl<T> implements IGenericRepository<T>,
 		return entityManager.find(clazz, entityID);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.pauloneto.webservicejee.repository.IGenericRepository#findAll(java.lang.Class)
+	 */
+	@Override
 	public List<T> findAll(Class<T> t) {
 		List<T> retorno = new ArrayList<>();
 		StringBuilder consulta = new StringBuilder("from "+t.getName()+" t");
@@ -137,30 +155,24 @@ public abstract class GenericRepositoryImpl<T> implements IGenericRepository<T>,
 		return retorno;
 	}
 	
-	/**
-	 * Objetivo:
-     * Dada uma entidade, obter o valor contido no atributo marcado 
-     * como ID (@Id).
-     * 
-     * Funcionamento:
-     * Através reflection obtém a entidade marcada com a annotation @Id e o 
-     * seu respectivo valor
-     *
-     * @author Paulo Antonio
-	 * @param entidade
-	 * @return
-	 * @throws Exception
-	 */
-	protected Long getId(T entidade) throws Exception {
-		Field[] fields = entidade.getClass().getDeclaredFields();
-		for (Field field : fields) {
-			Id id = field.getAnnotation(Id.class);
-			if (id != null) {
-				field.setAccessible(true);
-				return field.getLong(entidade);
+	protected List<?> executaSqlQuery(String consultaSql, Map<String, Object> parametros, Map<String, Type> addScalar,
+			Class clazzToTransformer) {
+		Session session = entityManager.unwrap(Session.class);
+		SQLQuery sqlQuery = session.createSQLQuery(consultaSql);
+		for(String key:parametros.keySet()) {
+			if(parametros.get(key) instanceof Set) {
+				sqlQuery.setParameterList(key,(Set)parametros.get(key));
+			}else if(parametros.get(key) instanceof List) {
+				sqlQuery.setParameterList(key,(List)parametros.get(key));
+			}else {
+				sqlQuery.setParameter(key, parametros.get(key));
 			}
 		}
-		return null;
+		for(String key:addScalar.keySet()) {
+			sqlQuery.addScalar(key, addScalar.get(key));
+		}
+		sqlQuery.setResultTransformer(Transformers.aliasToBean(clazzToTransformer));
+		return sqlQuery.list();
 	}
 	
 	public T getRefencia(Class<T> clazz, Long entityID){

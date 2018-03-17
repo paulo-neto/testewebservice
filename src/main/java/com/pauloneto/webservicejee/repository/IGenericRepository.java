@@ -51,4 +51,19 @@ public interface IGenericRepository<T> {
 	 * @throws RepositoryException
 	 */
 	public T findId(Class<T> clazz,Long entityID);
+	
+	/**
+	 * Atualiza uma Lista de entidade
+	 * @param lista
+	 * @return
+	 * @throws RepositoryException
+	 */
+	public List<T> updateList(List<T> lista)throws RepositoryException;
+	
+	/**
+	 * Consulta todos os registros
+	 * @param t
+	 * @return
+	 */
+	public List<T> findAll(Class<T> t);
 }
