@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -16,12 +15,11 @@ import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.transform.Transformers;
 import org.hibernate.type.Type;
 
 import com.pauloneto.webservicejee.mesages.KeyMesages;
+import com.pauloneto.webservicejee.repository.executor.IExecutorSQLQuery;
+import com.pauloneto.webservicejee.repository.executor.impl.ExecutorSQLQuery;
 
 /**
  * Classe que implementa os métodos de mínimos de manipulação com o Banco de
@@ -155,24 +153,16 @@ public abstract class GenericRepositoryImpl<T> implements IGenericRepository<T>,
 		return retorno;
 	}
 	
-	protected List<?> executaSqlQuery(String consultaSql, Map<String, Object> parametros, Map<String, Type> addScalar,
-			Class clazzToTransformer) {
-		Session session = entityManager.unwrap(Session.class);
-		SQLQuery sqlQuery = session.createSQLQuery(consultaSql);
-		for(String key:parametros.keySet()) {
-			if(parametros.get(key) instanceof Set) {
-				sqlQuery.setParameterList(key,(Set)parametros.get(key));
-			}else if(parametros.get(key) instanceof List) {
-				sqlQuery.setParameterList(key,(List)parametros.get(key));
-			}else {
-				sqlQuery.setParameter(key, parametros.get(key));
-			}
-		}
-		for(String key:addScalar.keySet()) {
-			sqlQuery.addScalar(key, addScalar.get(key));
-		}
-		sqlQuery.setResultTransformer(Transformers.aliasToBean(clazzToTransformer));
-		return sqlQuery.list();
+	protected List<T> executaSqlQuery(String consultaSql, Map<String, Object> parametros, Map<String, Type> addScalar,
+			Class<T> clazzToTransformer) {
+		IExecutorSQLQuery<T> executor = new ExecutorSQLQuery<T>(entityManager);
+		return executor.executarSQLQuery(consultaSql, parametros, addScalar, clazzToTransformer);
+	}
+	
+	protected T executaSqlQueryUnique(String consultaSql, Map<String, Object> parametros, Map<String, Type> addScalar,
+			Class<T> clazzToTransformer) {
+		IExecutorSQLQuery<T> executor = new ExecutorSQLQuery<T>(entityManager);
+		return executor.executarSQLQueryUnique(consultaSql, parametros, addScalar, clazzToTransformer);
 	}
 	
 	public T getRefencia(Class<T> clazz, Long entityID){
